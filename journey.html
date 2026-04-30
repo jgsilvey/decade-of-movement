@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A Decade of Movement</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #0a0a0d; color: #e8e8ea; min-height: 100vh; }
+
+/* ── HERO ── */
+.hero { padding: 5rem 2rem 3rem; text-align: center; background: radial-gradient(ellipse at 50% 0%, #1a0a3a 0%, #0a0a0d 70%); border-bottom: 1px solid #1a1a24; }
+.hero-eyebrow { font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: #6030cc; margin-bottom: 1rem; }
+.hero h1 { font-size: clamp(2.2rem, 6vw, 4rem); font-weight: 700; color: #fff; line-height: 1.1; margin-bottom: 1rem; }
+.hero h1 span { background: linear-gradient(135deg, #a060ff, #6030cc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.hero-sub { font-size: 1rem; color: #666; max-width: 500px; margin: 0 auto 2.5rem; line-height: 1.6; }
+.hero-stats { display: flex; justify-content: center; gap: 3rem; flex-wrap: wrap; }
+.hero-stat { text-align: center; }
+.hero-stat-val { font-size: 2rem; font-weight: 600; color: #a060ff; }
+.hero-stat-label { font-size: 11px; color: #555; text-transform: uppercase; letter-spacing: .06em; margin-top: 3px; }
+
+/* ── NAV ── */
+.nav { display: flex; justify-content: center; gap: 4px; padding: 1rem; border-bottom: 1px solid #1a1a24; position: sticky; top: 0; background: rgba(10,10,13,.95); backdrop-filter: blur(8px); z-index: 100; }
+.nav-btn { font-size: 13px; padding: 6px 16px; border-radius: 20px; border: 1px solid #2a2a30; background: transparent; color: #666; cursor: pointer; transition: all .15s; }
+.nav-btn:hover { color: #aaa; border-color: #444; }
+.nav-btn.active { background: #a060ff; color: #fff; border-color: #a060ff; }
+
+/* ── SECTIONS ── */
+.section { display: none; padding: 3rem 2rem; max-width: 1100px; margin: 0 auto; }
+.section.active { display: block; }
+.section-heading { font-size: 11px; font-weight: 600; color: #555; text-transform: uppercase; letter-spacing: .1em; margin-bottom: 2rem; }
+
+/* ── YEAR CARDS ── */
+.year-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; }
+.year-card { background: #111118; border: 1px solid #1e1e2a; border-radius: 16px; overflow: hidden; transition: transform .2s, border-color .2s; cursor: default; }
+.year-card:hover { transform: translateY(-2px); border-color: #3a2060; }
+.year-card-header { padding: 20px 20px 14px; position: relative; }
+.year-num { font-size: 3rem; font-weight: 800; color: #1e1e2a; position: absolute; top: 12px; right: 16px; line-height: 1; user-select: none; }
+.year-badge { display: inline-flex; align-items: center; gap: 4px; font-size: 10px; text-transform: uppercase; letter-spacing: .08em; padding: 3px 8px; border-radius: 20px; margin-bottom: 10px; }
+.year-badge.covid { background: rgba(239,68,68,.15); color: #ef4444; border: 1px solid rgba(239,68,68,.2); }
+.year-badge.intl { background: rgba(160,96,255,.15); color: #a060ff; border: 1px solid rgba(160,96,255,.2); }
+.year-badge.dom { background: rgba(80,80,120,.15); color: #888; border: 1px solid #2a2a30; }
+.year-headline { font-size: 1.1rem; font-weight: 600; color: #fff; margin-bottom: 6px; line-height: 1.3; }
+.year-sub { font-size: 12px; color: #666; line-height: 1.5; }
+.year-card-body { padding: 0 20px 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.year-stat { }
+.year-stat-val { font-size: 1.3rem; font-weight: 600; color: #ccc; }
+.year-stat-label { font-size: 10px; color: #555; text-transform: uppercase; letter-spacing: .06em; margin-top: 2px; }
+.year-flags { padding: 12px 20px; border-top: 1px solid #1a1a24; display: flex; gap: 4px; flex-wrap: wrap; align-items: center; min-height: 44px; }
+.year-flag { font-size: 1.3rem; }
+.year-flag-label { font-size: 11px; color: #555; }
+.year-bar { height: 3px; background: linear-gradient(90deg, #6030cc, #a060ff); margin: 0 20px 0; border-radius: 2px; }
+
+/* ── TRIP TIMELINE ── */
+.trip-filters { display: flex; gap: 6px; margin-bottom: 2rem; flex-wrap: wrap; }
+.trip-filter-btn { font-size: 12px; padding: 5px 14px; border-radius: 20px; border: 1px solid #2a2a30; background: transparent; color: #666; cursor: pointer; transition: all .15s; }
+.trip-filter-btn:hover { border-color: #444; color: #aaa; }
+.trip-filter-btn.active { background: #a060ff; color: #fff; border-color: #a060ff; }
+.trip-timeline { position: relative; }
+.trip-timeline::before { content: ''; position: absolute; left: 90px; top: 0; bottom: 0; width: 1px; background: #1e1e2a; }
+.trip-year-group { margin-bottom: 2.5rem; }
+.trip-year-label { font-size: 11px; font-weight: 700; color: #555; text-transform: uppercase; letter-spacing: .1em; margin-bottom: 12px; padding-left: 110px; }
+.trip-item { display: flex; align-items: flex-start; gap: 0; margin-bottom: 10px; position: relative; }
+.trip-date { font-size: 11px; color: #444; min-width: 80px; padding-top: 3px; text-align: right; padding-right: 12px; }
+.trip-dot { width: 10px; height: 10px; border-radius: 50%; margin-top: 5px; flex-shrink: 0; position: relative; z-index: 1; margin-right: 12px; }
+.trip-dot.intl { background: #a060ff; box-shadow: 0 0 8px #a060ff66; }
+.trip-dot.dom { background: #3a3a50; }
+.trip-content { background: #111118; border: 1px solid #1e1e2a; border-radius: 10px; padding: 10px 14px; flex: 1; transition: border-color .15s; }
+.trip-content:hover { border-color: #3a2060; }
+.trip-dest { font-size: 13px; font-weight: 500; color: #ccc; display: flex; align-items: center; gap: 6px; }
+.trip-flags { font-size: 14px; }
+.trip-meta { font-size: 11px; color: #555; margin-top: 3px; }
+.trip-intl-badge { font-size: 10px; background: rgba(160,96,255,.15); color: #a060ff; border: 1px solid rgba(160,96,255,.2); padding: 1px 6px; border-radius: 10px; margin-left: 4px; }
+
+/* ── MISC ── */
+@media (max-width: 600px) {
+  .hero { padding: 3rem 1rem 2rem; }
+  .hero-stats { gap: 1.5rem; }
+  .year-grid { grid-template-columns: 1fr; }
+  .trip-timeline::before { left: 70px; }
+  .trip-date { min-width: 60px; }
+  .section { padding: 2rem 1rem; }
+}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-eyebrow">Google Maps Timeline · 2014 – 2026</div>
+  <h1>A Decade of<br><span>Movement</span></h1>
+  <p class="hero-sub">10 years of location history — 11,000+ out-of-home visits, 23 countries, and a pandemic in the middle.</p>
+  <div class="hero-stats">
+    <div class="hero-stat"><div class="hero-stat-val">11,011</div><div class="hero-stat-label">Total visits</div></div>
+    <div class="hero-stat"><div class="hero-stat-val">23</div><div class="hero-stat-label">Countries</div></div>
+    <div class="hero-stat"><div class="hero-stat-val">50</div><div class="hero-stat-label">Major trips</div></div>
+    <div class="hero-stat"><div class="hero-stat-val">480</div><div class="hero-stat-label">Unique cities</div></div>
+  </div>
+</div>
+
+<div class="nav">
+  <button class="nav-btn active" onclick="switchSection('years')">Year in Review</button>
+  <button class="nav-btn" onclick="switchSection('trips')">Journey View</button>
+</div>
+
+<div class="section active" id="section-years">
+  <div class="section-heading">Each year at a glance</div>
+  <div class="year-grid" id="yearGrid"></div>
+</div>
+
+<div class="section" id="section-trips">
+  <div class="section-heading">Every trip, chronologically</div>
+  <div class="trip-filters">
+    <button class="trip-filter-btn active" onclick="filterTrips('all')">All trips</button>
+    <button class="trip-filter-btn" onclick="filterTrips('intl')">International only</button>
+    <button class="trip-filter-btn" onclick="filterTrips('dom')">Domestic only</button>
+  </div>
+  <div class="trip-timeline" id="tripTimeline"></div>
+</div>
+
+<script>
+const FLAGS={'US':'🇺🇸','KR':'🇰🇷','IT':'🇮🇹','MX':'🇲🇽','SV':'🇸🇻','MY':'🇲🇾','TH':'🇹🇭','JP':'🇯🇵','CL':'🇨🇱','FR':'🇫🇷','IN':'🇮🇳','TW':'🇹🇼','AR':'🇦🇷','CA':'🇨🇦','DK':'🇩🇰','CH':'🇨🇭','NL':'🇳🇱','DE':'🇩🇪','BE':'🇧🇪','IE':'🇮🇪','VA':'🇻🇦','SG':'🇸🇬','GB':'🇬🇧'};
+const MONTHS=['','Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+const YEARS={
+  '2016':{visits:1009,busiest_month:'Nov',busiest_count:199,intl:['KR','JP'],new_countries:['JP','KR'],headline:'First international trip',sub:'First year of full tracking — kicked off with a 12-day trip to Seoul & Tokyo',trips:6,covid:false},
+  '2017':{visits:1658,busiest_month:'Oct',busiest_count:200,intl:['KR','JP'],new_countries:[],headline:'Peak pre-COVID year',sub:'Most active year on record. New Orleans, NYC twice, Austin, and back to Korea & Japan in October',trips:10,covid:false},
+  '2018':{visits:1169,busiest_month:'Apr',busiest_count:128,intl:[],new_countries:[],headline:'A domestic year',sub:'No international travel — but a steady year of California road trips and visits across the US',trips:10,covid:false},
+  '2019':{visits:1902,busiest_month:'Oct',busiest_count:299,intl:['CL','AR','KR','TW'],new_countries:['CL','AR','TW'],headline:'Most traveled year ever',sub:'South America for the first time — Chile & Argentina — plus Seoul & Taipei in October. Busiest single month ever.',trips:9,covid:false},
+  '2020':{visits:424,busiest_month:'Jan',busiest_count:150,intl:[],new_countries:[],headline:'The year everything stopped',sub:'Austin in January, then COVID hit. March through September averaged just 8 out-of-home visits per month.',trips:3,covid:true},
+  '2021':{visits:403,busiest_month:'Sep',busiest_count:65,intl:['SV'],new_countries:['SV'],headline:'First steps back',sub:'The slowest year of the decade — but El Salvador in September marked the first international trip since 2019.',trips:5,covid:true},
+  '2022':{visits:830,busiest_month:'May',busiest_count:106,intl:[],new_countries:[],headline:'Rebuilding momentum',sub:'No international travel but the most domestic trips of any year — Portland twice, New Orleans, San Diego, Austin.',trips:14,covid:false},
+  '2023':{visits:1033,busiest_month:'Jun',busiest_count:210,intl:['IT','FR','VA','IE','IN'],new_countries:['IT','FR','VA','IE','IN'],headline:'Europe & India',sub:'First trip to Europe — Italy, France, Vatican, Ireland — then India in July. Six new countries in one year.',trips:9,covid:false},
+  '2024':{visits:1184,busiest_month:'Dec',busiest_count:200,intl:['SV','MY','TH','SG'],new_countries:['MY','TH','SG'],headline:'Southeast Asia',sub:'El Salvador again, then Malaysia, Thailand & Singapore in December — the biggest international trip in years.',trips:12,covid:false},
+  '2025':{visits:1162,busiest_month:'May',busiest_count:158,intl:['IT','DK','CH','BE','NL','DE','FR','CA','MX'],new_countries:['DK','CH','BE','NL','DE','CA','MX'],headline:'Most international year ever',sub:'22 days across Italy, Denmark, Switzerland, Belgium, Netherlands, and Germany — then Vancouver and Mexico City.',trips:11,covid:false},
+};
+
+const TRIPS=[
+  {start:'2016-04-01',end:'2016-04-12',days:12,dest:'Seoul & Tokyo',countries:['KR','JP'],type:'intl'},
+  {start:'2016-07-01',end:'2016-07-04',days:4,dest:'Los Angeles',countries:['US'],type:'dom'},
+  {start:'2016-11-10',end:'2016-11-20',days:11,dest:'New York City',countries:['US'],type:'dom'},
+  {start:'2017-01-08',end:'2017-01-16',days:9,dest:'New Orleans',countries:['US'],type:'dom'},
+  {start:'2017-02-13',end:'2017-02-20',days:8,dest:'New York City',countries:['US'],type:'dom'},
+  {start:'2017-05-25',end:'2017-05-31',days:7,dest:'Austin',countries:['US'],type:'dom'},
+  {start:'2017-06-04',end:'2017-06-11',days:8,dest:'New York City',countries:['US'],type:'dom'},
+  {start:'2017-10-03',end:'2017-10-17',days:15,dest:'Seoul & Tokyo',countries:['KR','JP'],type:'intl'},
+  {start:'2018-01-16',end:'2018-01-19',days:4,dest:'Scottsdale',countries:['US'],type:'dom'},
+  {start:'2018-04-14',end:'2018-04-20',days:7,dest:'Santa Rosa',countries:['US'],type:'dom'},
+  {start:'2018-08-03',end:'2018-08-07',days:5,dest:'Los Angeles',countries:['US'],type:'dom'},
+  {start:'2018-12-21',end:'2019-01-02',days:13,dest:'Los Angeles',countries:['US'],type:'dom'},
+  {start:'2019-01-14',end:'2019-01-21',days:8,dest:'New Orleans',countries:['US'],type:'dom'},
+  {start:'2019-03-30',end:'2019-04-15',days:17,dest:'Chile & Argentina',countries:['CL','AR'],type:'intl'},
+  {start:'2019-06-14',end:'2019-06-17',days:4,dest:'Lake Tahoe',countries:['US'],type:'dom'},
+  {start:'2019-08-28',end:'2019-09-09',days:13,dest:'Los Angeles',countries:['US'],type:'dom'},
+  {start:'2019-10-07',end:'2019-10-20',days:14,dest:'Seoul & Taipei',countries:['KR','TW'],type:'intl'},
+  {start:'2020-01-11',end:'2020-01-20',days:10,dest:'Austin',countries:['US'],type:'dom'},
+  {start:'2020-10-09',end:'2020-10-11',days:3,dest:'Guerneville',countries:['US'],type:'dom'},
+  {start:'2020-11-26',end:'2020-11-29',days:4,dest:'Los Angeles',countries:['US'],type:'dom'},
+  {start:'2021-04-09',end:'2021-04-12',days:4,dest:'Copperopolis',countries:['US'],type:'dom'},
+  {start:'2021-05-19',end:'2021-05-26',days:8,dest:'Central Valley',countries:['US'],type:'dom'},
+  {start:'2021-09-03',end:'2021-09-08',days:6,dest:'El Salvador',countries:['SV'],type:'intl'},
+  {start:'2022-04-09',end:'2022-04-17',days:9,dest:'Los Angeles',countries:['US'],type:'dom'},
+  {start:'2022-04-23',end:'2022-04-26',days:4,dest:'Monterey',countries:['US'],type:'dom'},
+  {start:'2022-05-27',end:'2022-05-31',days:5,dest:'New Orleans',countries:['US'],type:'dom'},
+  {start:'2022-06-16',end:'2022-06-20',days:5,dest:'San Diego',countries:['US'],type:'dom'},
+  {start:'2022-08-02',end:'2022-08-09',days:8,dest:'Portland',countries:['US'],type:'dom'},
+  {start:'2022-08-25',end:'2022-08-29',days:5,dest:'Austin',countries:['US'],type:'dom'},
+  {start:'2022-09-30',end:'2022-10-06',days:7,dest:'Portland',countries:['US'],type:'dom'},
+  {start:'2023-01-09',end:'2023-01-16',days:8,dest:'Miami',countries:['US'],type:'dom'},
+  {start:'2023-02-11',end:'2023-02-15',days:5,dest:'Honolulu',countries:['US'],type:'dom'},
+  {start:'2023-05-27',end:'2023-06-11',days:16,dest:'Italy, France & Vatican',countries:['IT','FR','VA','IE'],type:'intl'},
+  {start:'2023-06-15',end:'2023-06-19',days:5,dest:'Honolulu',countries:['US'],type:'dom'},
+  {start:'2023-07-23',end:'2023-07-30',days:8,dest:'India',countries:['IN'],type:'intl'},
+  {start:'2023-10-14',end:'2023-10-16',days:3,dest:'Seattle',countries:['US'],type:'dom'},
+  {start:'2024-01-15',end:'2024-01-22',days:8,dest:'San Diego',countries:['US'],type:'dom'},
+  {start:'2024-05-03',end:'2024-05-09',days:7,dest:'Santa Fe',countries:['US'],type:'dom'},
+  {start:'2024-08-28',end:'2024-09-02',days:6,dest:'El Salvador',countries:['SV'],type:'intl'},
+  {start:'2024-09-18',end:'2024-09-21',days:4,dest:'Yosemite',countries:['US'],type:'dom'},
+  {start:'2024-10-04',end:'2024-10-07',days:4,dest:'Portland',countries:['US'],type:'dom'},
+  {start:'2024-10-25',end:'2024-10-31',days:7,dest:'Sea Ranch',countries:['US'],type:'dom'},
+  {start:'2024-11-30',end:'2024-12-15',days:16,dest:'Malaysia, Thailand & Singapore',countries:['MY','TH','SG'],type:'intl'},
+  {start:'2025-01-07',end:'2025-01-17',days:11,dest:'Scottsdale',countries:['US'],type:'dom'},
+  {start:'2025-04-11',end:'2025-04-14',days:4,dest:'Denver',countries:['US'],type:'dom'},
+  {start:'2025-05-18',end:'2025-06-08',days:22,dest:'Italy, Denmark, Switzerland, Belgium, Netherlands & Germany',countries:['IT','DK','CH','BE','NL','DE','FR'],type:'intl'},
+  {start:'2025-07-31',end:'2025-08-03',days:4,dest:'Indianapolis — GenCon',countries:['US'],type:'dom'},
+  {start:'2025-10-17',end:'2025-10-20',days:4,dest:'Vancouver',countries:['CA'],type:'intl'},
+  {start:'2025-10-28',end:'2025-11-09',days:13,dest:'Mexico City',countries:['MX'],type:'intl'},
+  {start:'2026-02-13',end:'2026-02-19',days:7,dest:'Lake Tahoe',countries:['US'],type:'dom'},
+  {start:'2026-04-23',end:'2026-04-26',days:4,dest:'San Jose',countries:['US'],type:'dom'},
+];
+
+// ── YEAR CARDS ─────────────────────────────────────────────────────────────
+function renderYears() {
+  const grid = document.getElementById('yearGrid');
+  const maxVisits = Math.max(...Object.values(YEARS).map(y => y.visits));
+  Object.entries(YEARS).forEach(([yr, y]) => {
+    const flagStr = y.intl.map(c => FLAGS[c]||'').join('');
+    const newStr = y.new_countries.map(c => FLAGS[c]||'').join('');
+    const badge = y.covid
+      ? `<div class="year-badge covid">⚠ COVID year</div>`
+      : y.intl.length > 0
+        ? `<div class="year-badge intl">✈ International</div>`
+        : `<div class="year-badge dom">🏠 Domestic</div>`;
+    const barWidth = Math.round(y.visits / maxVisits * 100);
+    const card = document.createElement('div');
+    card.className = 'year-card';
+    card.innerHTML = `
+      <div class="year-card-header">
+        <div class="year-num">${yr}</div>
+        ${badge}
+        <div class="year-headline">${y.headline}</div>
+        <div class="year-sub">${y.sub}</div>
+      </div>
+      <div class="year-bar" style="width:${barWidth}%"></div>
+      <div class="year-card-body">
+        <div class="year-stat"><div class="year-stat-val">${y.visits.toLocaleString()}</div><div class="year-stat-label">Visits</div></div>
+        <div class="year-stat"><div class="year-stat-val">${y.trips}</div><div class="year-stat-label">Trips</div></div>
+        <div class="year-stat"><div class="year-stat-val">${y.busiest_month}</div><div class="year-stat-label">Busiest month</div></div>
+        <div class="year-stat"><div class="year-stat-val">${y.busiest_count}</div><div class="year-stat-label">Peak visits</div></div>
+      </div>
+      <div class="year-flags">
+        ${y.intl.length > 0
+          ? `<span style="font-size:11px;color:#555;margin-right:4px">Countries:</span>${y.intl.map(c=>`<span class="year-flag" title="${c}">${FLAGS[c]||c}</span>`).join('')}`
+          : `<span class="year-flag-label">US domestic travel only</span>`}
+        ${y.new_countries.length > 0 ? `<span style="font-size:10px;color:#6030cc;margin-left:8px">+${y.new_countries.length} new</span>` : ''}
+      </div>`;
+    grid.appendChild(card);
+  });
+}
+
+// ── TRIP TIMELINE ───────────────────────────────────────────────────────────
+let activeFilter = 'all';
+
+function filterTrips(type) {
+  activeFilter = type;
+  document.querySelectorAll('.trip-filter-btn').forEach(b => b.classList.toggle('active', b.textContent.toLowerCase().includes(type === 'all' ? 'all' : type === 'intl' ? 'international' : 'domestic')));
+  renderTrips();
+}
+
+function renderTrips() {
+  const container = document.getElementById('tripTimeline');
+  container.innerHTML = '';
+  const filtered = TRIPS.filter(t => activeFilter === 'all' || t.type === activeFilter);
+
+  // Group by year
+  const byYear = {};
+  filtered.forEach(t => {
+    const yr = t.start.slice(0, 4);
+    if (!byYear[yr]) byYear[yr] = [];
+    byYear[yr].push(t);
+  });
+
+  Object.entries(byYear).sort((a,b) => a[0].localeCompare(b[0])).forEach(([yr, trips]) => {
+    const group = document.createElement('div');
+    group.className = 'trip-year-group';
+    group.innerHTML = `<div class="trip-year-label">${yr}</div>`;
+    trips.forEach(t => {
+      const startDate = new Date(t.start);
+      const mo = MONTHS[startDate.getMonth()+1];
+      const day = startDate.getDate();
+      const flagStr = t.countries.map(c => FLAGS[c]||'').join('');
+      const item = document.createElement('div');
+      item.className = 'trip-item';
+      item.innerHTML = `
+        <div class="trip-date">${mo} ${day}</div>
+        <div class="trip-dot ${t.type}"></div>
+        <div class="trip-content">
+          <div class="trip-dest">
+            <span class="trip-flags">${flagStr}</span>
+            ${t.dest}
+            ${t.type === 'intl' ? '<span class="trip-intl-badge">International</span>' : ''}
+          </div>
+          <div class="trip-meta">${t.days} day${t.days > 1 ? 's' : ''} · ${t.start} → ${t.end}</div>
+        </div>`;
+      group.appendChild(item);
+    });
+    container.appendChild(group);
+  });
+}
+
+function switchSection(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.toggle('active', s.id === 'section-'+id));
+  document.querySelectorAll('.nav-btn').forEach((b,i) => b.classList.toggle('active', ['years','trips'][i] === id));
+}
+
+renderYears();
+renderTrips();
+</script>
+</body>
+</html>
