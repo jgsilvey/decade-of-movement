@@ -2,7 +2,7 @@
 
 A personal travel journal built from 10 years of Google Maps Timeline data with Claude Code — visualized as a year-in-review story and a chronological trip log.
 
-**[View Live →](https://jgsilvey.github.io/decade-of-movement)**
+**[View Page →](https://jgsilvey.github.io/decade-of-movement)**
 
 ---
 
